@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Your TDEE Results</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}"/>
+</head>
+<body>
+    <div class="results-card">
+        <!-- ══════════════════════════════════════════════TDEE BANNER ══════════════════════════════════════════════ -->
+        <div class="tdee-banner">
+            <h1><span style='font-size:45px;'>&#127869</span> Your Maintenance Calories <span style='font-size:45px;'>&#127869</span></h1>
+            <div class="tdee-number">{{ "{:,}".format(tdee) }}</div>
+            <div class="tdee-unit">calories per day</div>
+        </div>
+
+        <hr>
+
+        <h2 class="section-heading">Macronutrients Breakdown</h2>
+
+        <!-- ══════════════════════════════════════════════ TAB BUTTONS ══════════════════════════════════════════════ -->
+        <div class="tab-buttons">
+            <button class="tab-btn active" data-target="maintenance">&#9989 Maintain &#9989</button>
+            <button class="tab-btn" data-target="cut">&#9986 Cut  −500 &#9986</button>
+            <button class="tab-btn" data-target="bulk">&#128170 Bulk +500 &#128170</button>
+        </div>
+
+        <!-- ══════════════════════════════════════════════ TAB PANELS ══════════════════════════════════════════════ -->
+        <!-- MAINTENANCE PANEL -->
+        <div class="tab-panel active" id="maintenance">
+            <p class="cal-label">
+                Target: <span>{{ "{:,}".format(macros.maintenance.calories) }} cal/day</span>
+            </p>
+            <table class="macro-table">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Moderate Carb (30/35/35)</th>
+                        <th>Lower Carb (40/45/20)</th>
+                        <th>Higher Carb (30/20/50)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Protein</td>
+                        <td>{{ macros.maintenance.splits.moderate_carb.protein }}</td>
+                        <td>{{ macros.maintenance.splits.lower_carb.protein }}</td>
+                        <td>{{ macros.maintenance.splits.higher_carb.protein }}</td>
+                    </tr>
+                    <tr>
+                        <td>Fats</td>
+                        <td>{{ macros.maintenance.splits.moderate_carb.fat }}</td>
+                        <td>{{ macros.maintenance.splits.lower_carb.fat }}</td>
+                        <td>{{ macros.maintenance.splits.higher_carb.fat }}</td>
+                    </tr>
+                    <tr>
+                        <td>Carbs</td>
+                        <td>{{ macros.maintenance.splits.moderate_carb.carbs }}</td>
+                        <td>{{ macros.maintenance.splits.lower_carb.carbs }}</td>
+                        <td>{{ macros.maintenance.splits.higher_carb.carbs }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- CUT PANEL -->
+        <div class="tab-panel" id="cut">
+            <p class="cal-label">
+                Target: <span>{{ "{:,}".format(macros.cut.calories) }} cal/day</span>
+                <span style="color:#888"> (−500 calorie per day deficit from maintenance)</span>
+            </p>
+            <table class="macro-table">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Moderate Carb (30/35/35)</th>
+                        <th>Lower Carb (40/45/20)</th>
+                        <th>Higher Carb (30/20/50)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Protein</td>
+                        <td>{{ macros.cut.splits.moderate_carb.protein }}</td>
+                        <td>{{ macros.cut.splits.lower_carb.protein }}</td>
+                        <td>{{ macros.cut.splits.higher_carb.protein }}</td>
+                    </tr>
+                    <tr>
+                        <td>Fats</td>
+                        <td>{{ macros.cut.splits.moderate_carb.fat }}</td>
+                        <td>{{ macros.cut.splits.lower_carb.fat }}</td>
+                        <td>{{ macros.cut.splits.higher_carb.fat }}</td>
+                    </tr>
+                    <tr>
+                        <td>Carbs</td>
+                        <td>{{ macros.cut.splits.moderate_carb.carbs }}</td>
+                        <td>{{ macros.cut.splits.lower_carb.carbs }}</td>
+                        <td>{{ macros.cut.splits.higher_carb.carbs }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- BULK PANEL -->
+        <div class="tab-panel" id="bulk">
+            <p class="cal-label">
+                Target: <span>{{ "{:,}".format(macros.bulk.calories) }} cal/day</span>
+                <span style="color:#888"> (+500 calorie per day surplus from maintenance)</span>
+            </p>
+            <table class="macro-table">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Moderate Carb (30/35/35)</th>
+                        <th>Lower Carb (40/45/20)</th>
+                        <th>Higher Carb (30/20/50)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Protein</td>
+                        <td>{{ macros.bulk.splits.moderate_carb.protein }}</td>
+                        <td>{{ macros.bulk.splits.lower_carb.protein }}</td>
+                        <td>{{ macros.bulk.splits.higher_carb.protein }}</td>
+                    </tr>
+                    <tr>
+                        <td>Fats</td>
+                        <td>{{ macros.bulk.splits.moderate_carb.fat }}</td>
+                        <td>{{ macros.bulk.splits.lower_carb.fat }}</td>
+                        <td>{{ macros.bulk.splits.higher_carb.fat }}</td>
+                    </tr>
+                    <tr>
+                        <td>Carbs</td>
+                        <td>{{ macros.bulk.splits.moderate_carb.carbs }}</td>
+                        <td>{{ macros.bulk.splits.lower_carb.carbs }}</td>
+                        <td>{{ macros.bulk.splits.higher_carb.carbs }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- ══════════════════════════════════════════════ CALCULATE AGAIN BUTTON ══════════════════════════════════════════════ -->
+        <div class="button-row">
+            <a href="/" class="btn-primary">Calculate Again</a>
+        </div>
+
+    </div>
+
+    <script type="module" src="{{ url_for('static', filename='script.js') }}"></script>
+
+</body>
+</html>

@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>TDEE Calculator</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}"/>
+</head>
+<body>
+    <div class="card">
+        <h1>TDEE Calculator</h1>
+        <p class="subtitle">Calculate your daily calorie & macro targets</p>
+
+        <!-- ══════════════════════════════════════════════ FORM BODY ══════════════════════════════════════════════ -->
+        <!--
+            action="/results"  → where to send the data (matches @app.route("/results") in app.py)
+            method="POST"      → how to send it (matches methods=["POST"] in app.py)
+        -->
+        <form action="/results" method="POST">
+
+            <!-- ══════════════════════════════════════════════ AGE ═════════════════════════════════════════════ -->
+            <!-- name="age" → request.form["age"] in Flask -->
+            <div class="field">
+                <label for="age">Age</label>
+                <input type="number" id="age" name="age" min="10" max="100" placeholder="e.g. 25" required>
+            </div>
+
+            <!-- ══════════════════════════════════════════════ WEIGHT ════════════════════════════════════════════ -->
+            <!-- name="weight" → request.form["weight"] in Flask -->
+            <div class="field">
+                <label for="weight">Weight (lbs)</label>
+                <input type="number" id="weight" name="weight" min="50" max="500" placeholder="e.g. 180" required>
+            </div>
+
+            <!-- ══════════════════════════════════════════════ GENDER ═════════════════════════════════════════════ -->
+            <!-- 
+                Both radios share name="gender" — the browser sends whichever value="" is selected.
+                value="male"   → request.form["gender"] will equal "male"
+                value="female" → request.form["gender"] will equal "female"
+            -->
+            <div class="field">
+                <label>Gender</label>
+                <div class="radio-group">
+                    <label class="radio-option">
+                        <input type="radio" name="gender" value="male" required> Male
+                    </label>
+                    <label class="radio-option">
+                        <input type="radio" name="gender" value="female"> Female
+                    </label>
+                </div>
+            </div>
+
+            <!-- ══════════════════════════════════════════════ HEIGHT ══════════════════════════════════════════════ -->
+            <!-- built dynamically from HEIGHT_OPTIONS passed in from app.py -->
+            <div class="field">
+                <label for="height">Height</label>
+                <select id="height" name="height">
+                    {% for h in heights %}
+                        <option value="{{ h }}">{{ h }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <!-- ══════════════════════════════════════════════ ACTIVITY LEVEL ══════════════════════════════════════════════ -->
+            <!-- built dynamically from ACTIVITY_OPTIONS passed in from app.py -->
+            <div class="field">
+                <label for="activity">Activity Level</label>
+                <select id="activity" name="activity">
+                    {% for a in activities %}
+                        <option value="{{ a }}">{{ a }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <!-- ══════════════════════════════════════════════ BODY FAT % (optional) ═════════════════════════════════════════════ -->
+            <!--
+                 name="body_fat" → request.form.get("body_fat", 0) in Flask
+                 (.get() with a default because it's optional)
+                 
+                 The oninput JS one-liner just updates the display number as the slider moves.
+                 It's not connected to Flask at all — purely visual feedback.
+            -->
+            <div class="field">
+                <label for="body_fat">Body Fat % <span style="color:#555">(optional)</span></label>
+                <div class="slider-row">
+                    <input type="range" id="body_fat" name="body_fat"
+                           min="0" max="60" value="0"
+                           oninput="document.getElementById('bf-val').textContent = this.value + '%'">
+                    <span class="slider-value" id="bf-val">0%</span>
+                </div>
+                <p class="optional-note">Leave at 0 to use the Mifflin-St Jeor formula instead</p>
+            </div>
+
+            <hr>
+
+            <!-- ══════════════════════════════════════════════ SUBMIT ══════════════════════════════════════════════ -->
+            <!-- Clicking sends the form data to action="/results" via POST.-->
+            <button type="submit">Calculate TDEE →</button>
+
+        </form>
+    </div>
+</body>
+</html>
